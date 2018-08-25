@@ -10,3 +10,8 @@ module "vpc" {
     ManagedBy   = "tf"
   }
 }
+
+module "ec2" {
+  source = "ec2"
+
+}
