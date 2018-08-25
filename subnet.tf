@@ -21,10 +21,6 @@ resource "aws_route_table" "public" {
     gateway_id = "${aws_internet_gateway.live-internet-gateway.id}"
   }
 
-  route {
-    ipv6_cidr_block = "::/0"
-    gateway_id      = "${aws_internet_gateway.live-internet-gateway.id}"
-  }
 }
 
 resource "aws_route_table_association" "public" {
