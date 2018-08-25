@@ -10,7 +10,7 @@
 #############################
 
 resource "aws_instance" "ec2-a" {
-  ami                                  = "${var.ami["ubuntu_16_base"]}"
+  ami                                  = "${var.ami["ubunut16"]}"
   instance_type                        = "${var.ec2-variable["instance_type"]}"
   count                                = "${var.ec2-variable["a_instance_count"]}"
   key_name                             = "${var.key["name"]}"
@@ -58,7 +58,7 @@ resource "aws_instance" "ec2-a" {
 #           AZ-B            #
 #############################
 resource "aws_instance" "ec2-b" {
-  ami                                  = "${var.ami["ubuntu_16_base"]}"
+  ami                                  = "${var.ami["ubunut16"]}"
   instance_type                        = "${var.ec2-variable["instance_type"]}"
   count                                = "${var.ec2-variable["b_instance_count"]}"
   key_name                             = "${var.key["name"]}"

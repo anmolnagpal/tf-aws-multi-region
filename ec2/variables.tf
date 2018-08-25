@@ -19,3 +19,16 @@ variable "ec2-variable" {
     ebs_device_name           = "/dev/sdg"
   }
 }
+
+variable "public-ip" {
+  default = "0.0.0.0/0"
+}
+
+variable "ami" {
+  type = "map"
+
+  default = {
+    ubunut16 = ""
+    ubuntu18 = ""
+  }
+}
