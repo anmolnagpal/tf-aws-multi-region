@@ -9,12 +9,6 @@ resource "aws_security_group" "default" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port        = -1
-    to_port          = -1
-    protocol         = "icmpv6"
-    ipv6_cidr_blocks = ["::/0"]
-  }
 }
 
 
