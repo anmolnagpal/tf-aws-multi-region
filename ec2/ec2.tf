@@ -1,25 +1,3 @@
-variable "ec2-variable" {
-  type = "map"
-
-  default = {
-    #EC2-AZ-A
-    a_instance_count = 1
-
-    #EC2-AZ-B
-    b_instance_count = 1
-
-    #No of server's
-    instance_type = "t2.small"
-
-    # Instance type
-    volume_type               = "gp2"
-    volume_size               = "20"
-    delete_on_termination     = true
-    ebs_delete_on_termination = false
-    ebs_device_name           = "/dev/sdg"
-  }
-}
-
 ###_____    ____   ____
 ##| ____|  / ___| |___ \
 ##|  _|   | |       __) |
@@ -31,7 +9,7 @@ variable "ec2-variable" {
 #        backoffice-AZ-A       #
 #############################
 
-resource "aws_instance" "live-ec2-loadbalancer-a" {
+resource "aws_instance" "ec2-a" {
   ami                                  = "${var.ami["ubuntu_16_base"]}"
   instance_type                        = "${var.ec2-variable["instance_type"]}"
   count                                = "${var.ec2-variable["a_instance_count"]}"
@@ -39,7 +17,7 @@ resource "aws_instance" "live-ec2-loadbalancer-a" {
   instance_initiated_shutdown_behavior = "stop"
 
   vpc_security_group_ids = [
-    "${aws_security_group.live-sg-loadbalancer.id}",
+    "${aws_security_group.ec2-sg.id}",
   ]
 
   subnet_id                   = "${aws_subnet.subnet-pub-1a.id}"
@@ -53,13 +31,13 @@ resource "aws_instance" "live-ec2-loadbalancer-a" {
   }
 
   tags {
-    Application = "${var.tags["env"]}-${tags.app}-${count.index}-a"
+    Application = "${var.tags["env"]}-${var.tags["app"]}-${count.index}-a"
     Environment = "${var.tags["env"]}"
     ManagedBy   = "${var.tags["managedby"]}"
   }
 
   volume_tags {
-    Application = "${var.tags["env"]}-${tags.app}-${count.index}-a"
+    Application = "${var.tags["env"]}-${var.tags["app"]}-${count.index}-a"
     Environment = "${var.tags["env"]}"
     ManagedBy   = "${var.tags["managedby"]}"
   }
@@ -79,7 +57,7 @@ resource "aws_instance" "live-ec2-loadbalancer-a" {
 #############################
 #           AZ-B            #
 #############################
-resource "aws_instance" "live-ec2-loadbalancer-b" {
+resource "aws_instance" "ec2-b" {
   ami                                  = "${var.ami["ubuntu_16_base"]}"
   instance_type                        = "${var.ec2-variable["instance_type"]}"
   count                                = "${var.ec2-variable["b_instance_count"]}"
@@ -87,7 +65,7 @@ resource "aws_instance" "live-ec2-loadbalancer-b" {
   instance_initiated_shutdown_behavior = "stop"
 
   vpc_security_group_ids = [
-    "${aws_security_group.live-sg-loadbalancer.id}",
+    "${aws_security_group.ec2-sg.id}",
   ]
 
   subnet_id = "${aws_subnet.subnet-pub-1a.id}"
@@ -102,13 +80,13 @@ resource "aws_instance" "live-ec2-loadbalancer-b" {
   }
 
   tags {
-    Application = "${var.tags["env"]}-${tags.app}-${count.index}-b"
+    Application = "${var.tags["env"]}-${var.tags["app"]}-${count.index}-b"
     Environment = "${var.tags["env"]}"
     ManagedBy   = "${var.tags["managedby"]}"
   }
 
   volume_tags {
-    Application = "${var.tags["env"]}-${tags.app}-${count.index}-b"
+    Application = "${var.tags["env"]}-${var.tags["app"]}-${count.index}-b"
     Environment = "${var.tags["env"]}"
     ManagedBy   = "${var.tags["managedby"]}"
   }

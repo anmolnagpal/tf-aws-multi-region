@@ -6,9 +6,9 @@
 #                                                 |___/                                  |_|
 
 #backoffice Security Group
-resource "aws_security_group" "live-sg-loadbalancer" {
-  name        = "${var.live_vpc-main["env"]}-loadbalancer"
-  description = "api backoffice security group"
+resource "aws_security_group" "ec2-sg" {
+  name        = "${var.live_vpc-main["env"]}-${var.tags[app]}"
+  description = " ${var.tags[app]} security group"
 
   lifecycle {
     create_before_destroy = true
@@ -21,51 +21,7 @@ resource "aws_security_group" "live-sg-loadbalancer" {
     protocol  = "tcp"
 
     cidr_blocks = [
-      "${var.live_vpc-base["cidr_block"]}",
-    ]
-  }
-
-  #
-  ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "${var.public_ip}",
-    ]
-  }
-
-  #HTTPS
-  ingress {
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "${var.public_ip}",
-    ]
-  }
-
-  #Logz-io
-  ingress {
-    from_port = 5015
-    to_port   = 5015
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "${var.public_ip}",
-    ]
-  }
-
-  #HTTPS proxy
-  ingress {
-    from_port = 5443
-    to_port   = 5443
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "${var.live_vpc-base["cidr_block"]}",
+      "${var.public-ip}",
     ]
   }
 
@@ -75,15 +31,14 @@ resource "aws_security_group" "live-sg-loadbalancer" {
     to_port   = 0
     protocol  = "-1"
 
-    cidr_blocks = [
-      "${var.public_ip}",
-    ]
+    cidr_blocks = "0.0.0.0/0"
   }
 
-  vpc_id = "${var.live_vpc-main["id"]}"
+  vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "${var.live_vpc-main["env"]}-loadbalancer"
-    Environment = "${var.live_vpc-main["env"]}"
+    Application = "${var.tags["env"]}-${var.tags["app"]}-${count.index}-sg"
+    Environment = "${var.tags["env"]}"
+    ManagedBy   = "${var.tags["managedby"]}"
   }
 }
