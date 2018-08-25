@@ -10,9 +10,5 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags {
-    Application = "${var.tags["app"]}-vpc"
-    Environment = "${var.tags["env"]}"
-    ManagedBy   = "${var.tags["managedby"]}"
-  }
+  tags = "${merge(map("Name", format("%s", var.app)), var.tags)}"
 }

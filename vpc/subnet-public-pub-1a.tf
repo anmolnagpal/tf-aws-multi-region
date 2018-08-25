@@ -12,14 +12,10 @@ variable "subnet-pub-1a" {
 # Subnets with AZ-A
 resource "aws_subnet" "subnet-pub-1a" {
   vpc_id            = "${aws_vpc.vpc.id}"
-  cidr_block        = "${var.subnet-pub-1a["cidr_block"]}"
+  cidr_block        = "${var.subnet-pub-1a}"
   availability_zone = "${var.region}a"
 
-  tags {
-    Application = "${var.tags["app"]}-subnet-pub-1a"
-    Environment = "${var.tags["env"]}"
-    ManagedBy   = "${var.tags["managedby"]}"
-  }
+  tags = "${merge(map("Name", format("%s", var.app)), var.tags)}"
 }
 
 ##  route table association
@@ -31,11 +27,7 @@ resource "aws_route_table" "route-table-pub-1a" {
     gateway_id = "${aws_internet_gateway.ig.id}"
   }
 
-  tags {
-    Application = "${var.tags["app"]}-route-table-pub-1a"
-    Environment = "${var.tags["env"]}"
-    ManagedBy   = "${var.tags["managedby"]}"
-  }
+  tags = "${merge(map("Name", format("%s", var.app)), var.tags)}"
 }
 
 # route table association Zone-A

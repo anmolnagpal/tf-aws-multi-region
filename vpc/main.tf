@@ -5,8 +5,8 @@
 #|_|     |_| \_\  \___/     \_/    |___| |____/  |_____| |_| \_\
 # Specify the provider and access details
 provider "aws" {
-  shared_credentials_file = "./../credentials.txt"
-  profile                 = "{{ env }}"
+  shared_credentials_file = "./credentials"
+  profile                 = "live"
   region                  = "${var.region}"
 }
 
@@ -20,11 +20,7 @@ provider "aws" {
 resource "aws_internet_gateway" "ig" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
-    Application = "${var.tags["app"]}-igw"
-    Environment = "${var.tags["env"]}"
-    ManagedBy   = "${var.tags["managedby"]}"
-  }
+  tags = "${merge(map("Name", format("%s", var.app)), var.tags)}"
 }
 
 ###_  __  _____  __   __  ____       _      ___   ____
@@ -35,6 +31,6 @@ resource "aws_internet_gateway" "ig" {
 
 ## keypair for ec2
 resource "aws_key_pair" "live-key" {
-  key_name   = "${var.key["name"]}"
-  public_key = "${file("./../../_ssh/live-instance-key.pub")}"
+  key_name   = "${var.key}"
+  public_key = "${file("./it-admin-key.pub")}"
 }

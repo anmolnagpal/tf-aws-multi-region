@@ -5,28 +5,27 @@
 #####\_/    /_/   \_\ |_| \_\ |___| /_/   \_\ |____/  |_____| |_____| |____/
 
 variable "region" {
-  default     = "us-west-2"
-  description = "Region where you want to host"
+  description = "Region where applicatoin need to be setup"
+  default     = ""
+
 }
 
 variable "tags" {
-  type = "map"
-
-  default = {
-    env       = "stage"
-    app       = "test"
-    managedby = "Terraform"
-  }
-
-  description = "Terraform Tags"
+  description = "A map of tags to add to all resources"
+  default     = {}
 }
 
 variable "key" {
-  default     = "it-admin-key"
-  description = "SSH Key name"
+  description = "The CIDR block for the VPC."
+  default     = ""
 }
 
 variable "cidr_block" {
-  default     = "10.0.0.0/8"
-  description = "IP range"
+  description = "The CIDR block for the VPC."
+  default     = ""
+}
+
+variable "app" {
+  description = "Appication name to be used on all the resources as identifier"
+  default     = ""
 }
