@@ -6,5 +6,27 @@
 
 variable "region" {
   default     = "us-west-2"
-  description = "Region Where you want to host"
+  description = "Region where you want to host"
+}
+
+variable "tags" {
+  type = "map"
+
+  default = {
+    env       = "stage"
+    app       = "test"
+    managedby = "Terraform"
+  }
+
+  description = "Terraform Tags"
+}
+
+variable "key" {
+  default     = "it-admin-key"
+  description = "SSH Key name"
+}
+
+variable "cidr_block" {
+  default     = "10.0.0.0/8"
+  description = "IP range"
 }
